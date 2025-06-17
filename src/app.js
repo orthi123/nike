@@ -16,19 +16,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (WHITELIST.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+      cors({
+            origin: function (origin, callback) {
+                  if (WHITELIST.indexOf(origin) !== -1) {
+                        callback(null, true);
+                  } else {
+                        callback(new Error('Not allowed by CORS'));
+                  }
+            },
 
-    // credentials: true,
-    // methodS:'GET.HEAD.PUT,PATCH,POST DELETE',
-    // allowedHeaders:'content-type,Authorization'
-  })
+            // credentials: true,
+            // methodS:'GET.HEAD.PUT,PATCH,POST DELETE',
+            // allowedHeaders:'content-type,Authorization'
+      })
 );
 app.use(cookieParser());
+
 export { app };
