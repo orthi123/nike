@@ -103,7 +103,7 @@ class ApiError extends Error {
 
 
   //Database Error----------------------------
-  static serverError(message = 'Database Error', errors = {}, errorCode = 'DB_500') {
+  static databaseError(message = 'Database Error', errors = {}, errorCode = 'DB_500') {
     return new ApiError(500, message, errors, '', errorCode);
   }
 
@@ -113,7 +113,7 @@ class ApiError extends Error {
 
   //Custom
   static custom(statusCode, message, errors = {}, errorCode = 'REQ_409') {
-    return new ApiError(statusCode, message, error, '', errorCode);
+    return new ApiError(statusCode, message, errors, '', errorCode);
   }
 }
 
