@@ -5,3 +5,7 @@ app.listen(PORT,()=>{
     console.log(`Server is running http://localhost:${PORT}`);
     
 })
+
+
+
+//Alt+ Shift +F=prettier

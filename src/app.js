@@ -3,6 +3,7 @@ import express from 'express';
 import { WHITELIST } from './constants/constants.js';
 import { get } from 'mongoose';
 import cookieParser from 'cookie-parser'; //cookie pathay ba read kore
+import errorHandler from './middlewares/errorHandler.middleware.js';
 
 const app = express();
 app.use(express.json());
@@ -16,20 +17,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.use(
-      cors({
-            origin: function (origin, callback) {
-                  if (WHITELIST.indexOf(origin) !== -1) {
-                        callback(null, true);
-                  } else {
-                        callback(new Error('Not allowed by CORS'));
-                  }
-            },
+  cors({
+    origin: WHITELIST,
 
-            // credentials: true,
-            // methodS:'GET.HEAD.PUT,PATCH,POST DELETE',
-            // allowedHeaders:'content-type,Authorization'
-      })
+    credentials: true,
+    // methodS:'GET.HEAD.PUT,PATCH,POST DELETE',
+    // allowedHeaders:'content-type,Authorization'
+  })
 );
 app.use(cookieParser());
 
+//define healthCheckRoutes
+import healthCheckRoute from './routes/healthCheckRoute.js';
+app.use(healthCheckRoute);
+app.use(errorHandler); //shobar last e hoy
 export { app };
