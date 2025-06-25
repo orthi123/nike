@@ -1,5 +1,6 @@
 import ApiError from '../utils/apiError.js';
 import ApiSuccess from '../utils/apiSuccess.js';
+
 const healthCheck = async (_, res) => {
   try {
     const uptimeSeconds = process.uptime();
@@ -24,4 +25,5 @@ function formatUptime(seconds) {
 
   return `${days} day${days !== 1 ? 's' : ''},${hours} hour${hours !== 1 ? 's' : ''},${minutes} minute${minutes !== 1 ? 's' : ''}`;
 }
-export { healthCheck };
+export { healthCheck }; 
+// this is my healthCheck.controller 

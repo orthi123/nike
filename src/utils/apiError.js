@@ -112,8 +112,8 @@ class ApiError extends Error {
 
 
   //Custom
-  static custom(statusCode, message, errors = {}, errorCode = 'REQ_409') {
-    return new ApiError(statusCode, message, errors, '', errorCode);
+  static custom(statusCode, message, errors = {},stack='',errorCode ='') {
+    return new ApiError(statusCode, message, errors,stack, errorCode);
   }
 }
 
