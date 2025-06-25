@@ -1,9 +1,9 @@
 import { asyncHandler } from '../../utils/asyncHandler.js';
-import {User} from "../../models/user.model.js"
+import { User } from '../../models/user.model.js';
 
 const signUp = asyncHandler(async (req, res) => {
-  const user = await User.create(req.body)
-  return res.json({user});
+  const { username, name, email, password } = req.body;
+  return res.json({ user });//package laagbe jod
 });
 
 export { signUp };

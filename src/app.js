@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 //define healthCheckRoutes
 import healthCheckRoute from './routes/healthCheckRoute.js';
-import userRoute from '../src/controllers/user/user.route.js';
+import userRoute from '../src/routes/user.route.js';
 
 app.use(healthCheckRoute);
 app.use('/api/v1', userRoute); //v1 holo version
