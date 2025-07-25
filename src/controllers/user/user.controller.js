@@ -1,11 +1,16 @@
+import { APP_URL } from '../../constants/constants.js';
 import { User } from '../../models/user.model.js';
 import ApiError from '../../utils/apiError.js';
 import ApiSuccess from '../../utils/apiSuccess.js';
 import asyncHandler from '../../utils/asyncHandler.js';
+import { sendMail,verifyEmail } from '../../utils/mail.js';
+
+
+// --------------signUp--------------
 
 const signUp = asyncHandler(async (req, res) => {
   const { username, name, email, password } = req.body;
-  console.log(username, name, email, password);
+ 
   const usernameExists = await User.findOne({ username });
   if (usernameExists) {
     throw ApiError.badRequest('Username already exists');
@@ -21,9 +26,21 @@ const signUp = asyncHandler(async (req, res) => {
     email,
     password,
   });
+
+  
   const user = await User.findById(createdUser._id).select(
-    '-password -createdAt -updatedAt -passwordResetToken -passwordResetExpires'
+    '-_v -password -createdAt -updatedAt -passwordResetToken -passwordResetExpires'
   );
+  
+  const token=user.jwtToken();
+  const verifyUrl=`${APP_URL}/api/v1/users/verify/?token=${token}`;
+  
+  sendMail({
+    email,
+    subject:'Verify your email',
+    mailFormat:verifyEmail(name,verifyUrl),
+  });
+
   return res.status(200).json(ApiSuccess.created('User created', user));
 });
 

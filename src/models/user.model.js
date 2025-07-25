@@ -1,11 +1,16 @@
 import mongoose, { Schema } from 'mongoose';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { JWT_EXPIRES_IN,JWT_SECRET } from '../constants/constants.js';
+
+
 const userSchema = new Schema(
   {
     username: {
       type: String,
-      require: true,
-      unique:true,
+      required: true,
+      unique: true,
+      index:true,
     },
     name: {
       type: String,
@@ -13,8 +18,9 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      require: true, 
-      unique:true,
+      required: true,
+      unique: true,
+      index:true,
     },
     password: {
       type: String,
@@ -41,11 +47,26 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save",async function(next){
-if(!this.isModified('password')|| !this.password) return next();
-this.password=await bcrypt.hash(this.password,10);
-next();
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password') || !this.password) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
+
+userSchema.methods.comparePassword=async function(password){
+
+  return await bcrypt.compare(password,this.password);
+};
+
+
+
+
+userSchema.methods.jwtToken=function(){
+  return jwt.sign({ id: this._id, username: this.username, email: this.email }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN,
+  });
+};
+
 
 
 export const User = mongoose.models.User || mongoose.model('User', userSchema);

@@ -1,18 +1,17 @@
 import nodemailer from 'nodemailer';
 import { MAIL_PASS, MAIL_PORT, MAIL_SERVICE, MAIL_USER, NODE_ENV } from '../constants/constants.js';
-import ApiError from './apiError';
+import ApiError from './apiError.js';
 import Mailgen from 'mailgen';
 async function sendMail(options) {
   // Create a test account or replace with real credentials.
-  const transporter = nodemailer.createTransport({
+  try{
+const transporter = nodemailer.createTransport({
     host: MAIL_SERVICE,
-
     port: MAIL_PORT,
     secure: NODE_ENV === 'development' ? false : true,
     auth: {
       user: MAIL_USER,
-
-      pass: MAIL_PASS,
+pass: MAIL_PASS,
     },
   });
 
@@ -21,17 +20,17 @@ async function sendMail(options) {
   // Wrap in an async IIFE so we can use await.
 
   const mail = await transporter.sendMail({
-    from: '"Nike" <conatct@nike.com>',
+    from: '"Nike" <contact@nike.com>',
     to: options.email,
     subject: options.subject,
     text: emailText, // plain‑text body
     html: emailBody, // HTML body
   });
-  try {
-    await mail();
-  } catch (error) {
+  }catch(error){
     throw ApiError.serverError(error.message);
   }
+  
+
 }
 
 function mailgenConfig(mailFormat) {

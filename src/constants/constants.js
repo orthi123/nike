@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 const PORT = process.env.PORT || 8000;
 const NODE_ENV = process.env.NODE_ENV;
+const APP_URL = NODE_ENV === 'production' ? process.env.APP_URL : `http://localhost:${PORT}`;
 const WHITELIST = process.env.WHITELIST || ['http://localhost:5175/'];
 const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -15,10 +16,11 @@ const MAIL_PORT = process.env.MAIL_PORT;
 const MAIL_USER = process.env.MAIL_USER;
 const MAIL_PASS = process.env.MAIL_PASS;
 export {
-  MONGO_URI,
-  NODE_ENV,
+  APP_URL,
   PORT,
   WHITELIST,
+  MONGO_URI,
+  NODE_ENV,
   JWT_SECRET,
   JWT_EXPIRES_IN,
   ACCESS_TOKEN_SECRET,
